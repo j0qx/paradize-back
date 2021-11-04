@@ -4,7 +4,7 @@ BEGIN;
 
 CREATE TABLE user_account (
     id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    username VARCHAR(32) NOT NULL,
+    username VARCHAR(32) NOT NULL UNIQUE,
     first_name VARCHAR(64) ,
     last_name VARCHAR(64) ,
     civility VARCHAR(32) ,
