@@ -1,0 +1,37 @@
+{
+  "name": "server-graphql",
+  "version": "1.0.0",
+  "description": "oparadise's backend server",
+  "homepage": "https://github.com/O-clock-Valhalla/projet-07-paradize#readme",
+  "license": "MIT",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/O-clock-Valhalla/projet-07-paradize.git"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "bugs": {
+    "url": "https://github.com/O-clock-Valhalla/projet-07-paradize/issues"
+  },
+  "dependencies": {
+    "apollo-datasource-rest": "^3.3.0",
+    "apollo-server-express": "^3.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "express-graphql": "^0.12.0",
+    "nodemon": "^2.0.14",
+    "pg": "^8.7.1",
+    "postgresql": "^0.0.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.14.5",
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "cross-env": "^5.2.1"
+  }
+}
