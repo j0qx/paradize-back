@@ -27,10 +27,10 @@ ALTER TABLE
     
 
 CREATE DOMAIN code_phone as text CHECK (
-    VALUE ~ '^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$'
+    VALUE ~ '^(0033|0)(6|7|9|1)\d{8}$'
 );
 
-ALTER TABLE user_account ALTER COLUMN number_phone TYPE code_phone; 
+ALTER TABLE user_account ALTER COLUMN phone TYPE code_phone; 
 
  
 

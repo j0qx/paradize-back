@@ -16,7 +16,7 @@ const user = gql`
     address: String,
     city_code: Int,
     city: String,
-    number_phone: Int,
+    phone: String,
   }
 
   extend type Query { # extend root Query
@@ -26,16 +26,16 @@ const user = gql`
 
   extend type Mutation {
     registerUser(
-      username: String!,
-      first_name: String,
-      last_name: String,
-      civility: String,
-      email: String!,
-      password: String!,
-      address: String,
-      city_code: Int,
-      city: String,
-      number_phone: Int,
+      username: String!
+      first_name: String
+      last_name: String
+      civility: String
+      email: String!
+      password: String!
+      address: String
+      city_code: Int
+      city: String
+      phone: String
     ): User!
   }
 `;

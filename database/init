@@ -2,8 +2,8 @@
 # je  pars de la racine
 # export PGUSER=postgres
 export PGUSER=oparadise
-export PGPASSWORD=Oparadise0clock$
+export PGPASSWORD=oclock
 
-sqitch deploy
+sqitch revert
   
-# sqitch deploy db:pg:oparadise
+sqitch deploy db:pg:oparadise

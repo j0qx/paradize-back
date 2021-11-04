@@ -32,7 +32,6 @@ const PORT = process.env.PORT;
     typeDefs,
     // describe actions to db or externals api
     resolvers,
-    plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
     dataSources: () => ({
       // datasources is very useful to use lots of external api
       // datasource will be available inside the context from resolver

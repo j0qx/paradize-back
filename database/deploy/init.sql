@@ -13,7 +13,7 @@ CREATE TABLE user_account (
     address TEXT ,
     city_code INT ,
     city TEXT ,
-    number_phone INT UNIQUE
+    phone INT UNIQUE
 );
 CREATE TABLE coordinate (
     id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
