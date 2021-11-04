@@ -1,17 +1,15 @@
 import dotenv from 'dotenv';
-import pg from 'pg';
+import { Pool } from 'pg';
 
-const { Client } = pg;
 dotenv.config();
 
-const client = new Client({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_BASE,
-  port: process.env.DB_PORT,
+const client = new Pool({
+  // Heroku nous met à disposition le DATABASE_URL
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    // on demande à accepter le fait de ne pas être en ssl
+    rejectUnauthorized: false,
+  },
 });
-
-client.connect();
 
 export default client;
