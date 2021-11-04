@@ -10,7 +10,7 @@ import TomtomApi from './datasources/TomtomApi';
 import GeoRisqueApi from './datasources/GeoRisqueApi';
 
 dotenv.config();
-const PORT = process.env.BACK_PORT || 3333;
+const PORT = process.env.BACK_PORT || 5000;
 
 // anomyme function executed when everything is loaded
 (async () => {
