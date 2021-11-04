@@ -2,13 +2,15 @@ import express from 'express';
 import cors from 'cors';
 import { ApolloServer } from 'apollo-server-express';
 import { ApolloServerPluginInlineTrace } from 'apollo-server-core';
+import dotenv from 'dotenv';
 
 import typeDefs from './typesDefs';
 import resolvers from './resolvers';
 import TomtomApi from './datasources/TomtomApi';
 import GeoRisqueApi from './datasources/GeoRisqueApi';
 
-const PORT = 3333;
+dotenv.config();
+const PORT = process.env.BACK_PORT || 3333;
 
 // anomyme function executed when everything is loaded
 (async () => {
