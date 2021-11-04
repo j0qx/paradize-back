@@ -39,6 +39,7 @@ const PORT = process.env.PORT;
       tomtomApi: new TomtomApi(),
       geoRisqueApi: new GeoRisqueApi(),
     }),
+    introspection: true,
   });
   // execute launcher from ApolloServers'class
   await apolloServer.start();
