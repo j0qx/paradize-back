@@ -1,7 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import { ApolloServer } from 'apollo-server-express';
-import { ApolloServerPluginInlineTrace } from 'apollo-server-core';
+import {
+  ApolloServerPluginLandingPageGraphQLPlayground
+} from "apollo-server-core";
 import dotenv from 'dotenv';
 
 import typeDefs from './typesDefs';
@@ -30,7 +32,7 @@ const PORT = process.env.PORT;
     typeDefs,
     // describe actions to db or externals api
     resolvers,
-    plugins: [ApolloServerPluginInlineTrace()],
+    plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
     dataSources: () => ({
       // datasources is very useful to use lots of external api
       // datasource will be available inside the context from resolver
