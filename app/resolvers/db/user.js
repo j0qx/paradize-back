@@ -1,6 +1,8 @@
 import client from '../../db';
-import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
+
+const SECRET_KEY = process.env.SECRET_KEY;
 const table = 'user_account'
 
 const userQueries = {
@@ -14,10 +16,9 @@ const userQueries = {
   },
   user: async (_, args) => {
     const keys = Object.keys(args);
-    console.log(keys)
+
     // get value from user to put inside table's columns
     const values = Object.values(args);
-    console.log(values)
 
     const WhereArgsformat = keys.map((key,idx) => `${key}=$${idx+1}`).join(',')
     const query = {
@@ -27,13 +28,29 @@ const userQueries = {
     const response = await client.query(query);
     return response.rows[0];
   },
+  login:async (_,  args) => {
+    const findUser = await userQueries.user(_, {email:args.email})
+    if(!findUser){return "invalid email"}
+    // decode password from db and check if it's equal to args.password
+    const isVerified = jwt.verify(findUser.password, SECRET_KEY, (err, password) => {  
+      return args.password === password ? true : false
+    })
+    if(isVerified){
+      // create token for this user
+      const access_token = jwt.sign({id:findUser.id, email:findUser.email }, SECRET_KEY, { expiresIn: '7d' });
+      return access_token
+    }
+    return "invalid password"
+  }
 };
 
 const userMutations = {
   createUser: async (_, args) => {
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(args.password, salt);
-    args.password = hash
+
+    var token = jwt.sign(args.password, SECRET_KEY);
+    args.password = token
+    console.log(token)
+
     // get names of table's columns
     const keys = Object.keys(args);
     // get value from user to put inside table's columns

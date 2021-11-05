@@ -43,6 +43,10 @@ const user = gql`
       id:Int
       phone: String
       username: String):User! # argument is email
+    login(
+      email: String
+      password: String
+    ):String
   }
 
   extend type Mutation {

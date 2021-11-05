@@ -1,10 +1,10 @@
 import express from 'express';
 import cors from 'cors';
-import { ApolloServer } from 'apollo-server-express';
-import {
-  ApolloServerPluginLandingPageGraphQLPlayground
-} from "apollo-server-core";
+import { ApolloServer , AuthenticationError} from 'apollo-server-express';
 import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken'
+import bcrypt from 'bcryptjs'
+import cookieParser from 'cookie-parser'
 
 import typeDefs from './typesDefs';
 import resolvers from './resolvers';
@@ -14,12 +14,14 @@ import GeoRisqueApi from './datasources/GeoRisqueApi';
 dotenv.config();
 const PORT = process.env.PORT;
 
+
 // anomyme function executed when everything is loaded
 (async () => {
+  
   const app = express();
-  app.use(
-    cors(),
-  );
+  app.use(cors());
+  app.use(cookieParser())
+
 
   app.get('/', (req, res) => {
     res.send('welcome on graphql server');
@@ -32,6 +34,7 @@ const PORT = process.env.PORT;
     typeDefs,
     // describe actions to db or externals api
     resolvers,
+    context: ({ req, res }) => ({ req, res }),
     dataSources: () => ({
       // datasources is very useful to use lots of external api
       // datasource will be available inside the context from resolver
@@ -41,7 +44,9 @@ const PORT = process.env.PORT;
     introspection: true,
   });
   // execute launcher from ApolloServers'class
+  
   await apolloServer.start();
+  
   // apollo will be executed for each server's request
   apolloServer.applyMiddleware({ app });
 
