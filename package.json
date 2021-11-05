@@ -19,6 +19,7 @@
   "dependencies": {
     "apollo-datasource-rest": "^3.3.0",
     "apollo-server-express": "^3.4.0",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "esm": "^3.2.25",

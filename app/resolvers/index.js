@@ -1,15 +1,15 @@
-import { queryOparadise, mutationOparadise } from './oparadise';
+import { queryDb, mutationDb } from './db';
 import { queryTomtom } from './tomtom';
 import { queryGeoRisque } from './geoRisque';
 
 const resolvers = {
   Query: {
-    ...queryOparadise,
+    ...queryDb,
     ...queryTomtom,
     ...queryGeoRisque,
   },
   Mutation: {
-    ...mutationOparadise,
+    ...mutationDb,
   },
 };
 

@@ -28,8 +28,8 @@ CREATE TABLE offer (
     picture bytea ,
     description TEXT NOT NULL,
     status TEXT NOT NULL,
-    user_account_id int NOT NULL REFERENCES user_account(id),
-    coordinate_id int NOT NULL REFERENCES coordinate(id)
+    user_account_id int REFERENCES user_account(id),
+    coordinate_id int REFERENCES coordinate(id)
 
 );
 

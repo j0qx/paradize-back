@@ -19,13 +19,34 @@ const user = gql`
     phone: String,
   }
 
+  input UserInput {
+    username: String,
+    first_name: String,
+    last_name: String,
+    civility: String,
+    email: String,
+    password: String,
+    address: String,
+    city_code: Int,
+    city: String,
+    phone: String,
+  }
+
+  type Message {
+    message: String!
+  }
+
   extend type Query { # extend root Query
     users:[User]!
-    user(email:String!):User! # argument is email
+    user(
+      email:String
+      id:Int
+      phone: String
+      username: String):User! # argument is email
   }
 
   extend type Mutation {
-    registerUser(
+    createUser(
       username: String!
       first_name: String
       last_name: String
@@ -37,6 +58,19 @@ const user = gql`
       city: String
       phone: String
     ): User!
+
+    deleteUser(
+      email: String
+      id: Int
+      phone: String
+      username: String
+    ): Message!
+
+    updateUser(
+      id: Int!
+      toUpdate: UserInput
+    ): User!
+
   }
 `;
 export default user;
