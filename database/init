@@ -2,7 +2,7 @@
 # je  pars de la racine
 # export PGUSER=postgres
 export PGUSER=oparadise
-export PGPASSWORD=oclock
+export PGPASSWORD=Oparadise0clock$
 
 sqitch revert
   
