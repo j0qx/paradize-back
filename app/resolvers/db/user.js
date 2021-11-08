@@ -30,7 +30,11 @@ const userQueries = {
   },
   login:async (_,  args) => {
     const findUser = await userQueries.user(_, {email:args.email})
-    if(!findUser){return "invalid email"}
+    if(!findUser){return {
+      message:"invalid email",
+      token:""
+    }
+  }
     // decode password from db and check if it's equal to args.password
     const isVerified = jwt.verify(findUser.password, SECRET_KEY, (err, password) => {  
       return args.password === password ? true : false
@@ -38,9 +42,15 @@ const userQueries = {
     if(isVerified){
       // create token for this user
       const access_token = jwt.sign({id:findUser.id, email:findUser.email }, SECRET_KEY, { expiresIn: '7d' });
-      return access_token
+      return {
+        message:"authorized",
+        token:access_token
+      }
     }
-    return "invalid password"
+    return {
+      message:"invalid password",
+      token:""
+    }
   }
 };
 

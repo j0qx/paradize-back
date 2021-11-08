@@ -36,6 +36,10 @@ const user = gql`
     message: String!
   }
 
+  type Authorize {
+    message:String
+    token:String
+  }
   extend type Query { # extend root Query
     users:[User]!
     user(
@@ -46,7 +50,7 @@ const user = gql`
     login(
       email: String
       password: String
-    ):String
+    ):Authorize
   }
 
   extend type Mutation {
