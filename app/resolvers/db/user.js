@@ -41,7 +41,7 @@ const userQueries = {
     })
     if(isVerified){
       // create token for this user
-      const access_token = jwt.sign({id:findUser.id, email:findUser.email }, SECRET_KEY, { expiresIn: '7d' });
+      const access_token = jwt.sign({id:findUser.id, email:findUser.email , username: findUser.username }, SECRET_KEY, { expiresIn: '7d' });
       return {
         message:"authorized",
         token:access_token
