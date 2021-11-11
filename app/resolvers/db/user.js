@@ -40,37 +40,9 @@ const userQueries = {
 
     const offersByUser = await offerQueries.offers(_,{user_account_id:userId})
     result.offers = offersByUser
-
-
-    // userResponse.rows[0].offers = offersUserResponse.rows
-    //   console.log(' userResponse.rows[0].offers : ' ,  userResponse.rows[0].offers)
-
     return result;
 
   },
-  // offerByUserId: async(_,args) => {
-  //   const keys = Object.keys(args);
-  //   const values = Object.values(args);
-
-  //   const WhereArgsformat = keys.map((key,idx) => `${key}=$${idx+1}`).join(',')
-
-  //   const response = await client.query(query);
-  //   return response.rows[0];
-
-  //  },
-  //  favOfferByUserId: async (_,args) => {
-  //   const keys = Object.keys(args);
-  //   const values = Object.values(args);
-
-  //   const WhereArgsformat = keys.map((key,idx) => `${key}=$${idx+1}`).join(',')
-  //   const query = {
-  //     text:  `SELECT * FROM ${v_table} WHERE ${WhereArgsformat}`,
-  //     values,
-  //   };
-  //   const response = await client.query(query);
-  //   return response.rows[0];
-
-  //  }, 
   login:async (_,  args) => {
     const findUser = await userQueries.user(_, {email:args.email})
     if(!findUser){return {
