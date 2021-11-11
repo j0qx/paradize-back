@@ -1,11 +1,12 @@
 import client from '../../db';
 import jwt from 'jsonwebtoken';
 
+import {  offerQueries, offerMutations } from './offer'
+
+
 
 const SECRET_KEY = process.env.SECRET_KEY;
 const table = 'user_account'
-const v_table = 'v_offer_user'
-const v_table_one = 'v_offer_user_favorite'
 
 const userQueries = {
   // actions when we execute graphql requests
@@ -13,70 +14,63 @@ const userQueries = {
   // cf: https://www.apollographql.com/docs/apollo-server/data/resolvers/
   users: async () => {
     // client come from context , cf : app/index.js
-    const response = await client.query(`SELECT * FROM ${table}`);
-    return response.rows;
+    const userResponse = await client.query(`SELECT * FROM ${table}`);
+    const offerResponse = await offerQueries.offers()
+    const userOffers = userResponse.rows.map(user => {
+      const userOffer = offerResponse.filter(offer => user.id === offer.user_account_id ? offer : null )
+      return {...user, offers:userOffer}
+    })
+    return userOffers;
   },
-
-  findAllOfferForUser: async () => {
-    const response = await client.query (`SELECT * FROM ${v_table}`);
-    return response.rows;
-  },
-
-  allOfferFavForUser:  async() => {
-
-
-    const response = await client.query (`SELECT * FROM ${v_table_one}`);
-    return response.rows;
-    
-  },
-
-
-
   user: async (_, args) => {
+    let result ={}
     const keys = Object.keys(args);
 
     // get value from user to put inside table's columns
     const values = Object.values(args);
 
     const WhereArgsformat = keys.map((key,idx) => `${key}=$${idx+1}`).join(',')
-    const query = {
+    const userQuery = {
       text:  `SELECT * FROM ${table} WHERE ${WhereArgsformat}`,
       values,
-    };
-    const response = await client.query(query);
-    return response.rows[0];
+    };    
+    const userResponse = await client.query(userQuery);
+    result = {...userResponse.rows[0]}
+    const userId = userResponse.rows[0].id
+
+    const offersByUser = await offerQueries.offers(_,{user_account_id:userId})
+    result.offers = offersByUser
+
+
+    // userResponse.rows[0].offers = offersUserResponse.rows
+    //   console.log(' userResponse.rows[0].offers : ' ,  userResponse.rows[0].offers)
+
+    return result;
 
   },
-   
-   findOfferUserById: async(_,args) => {
-    const keys = Object.keys(args);
-    const values = Object.values(args);
+  // offerByUserId: async(_,args) => {
+  //   const keys = Object.keys(args);
+  //   const values = Object.values(args);
 
-    const WhereArgsformat = keys.map((key,idx) => `${key}=$${idx+1}`).join(',')
-    const query = {
-      text:  `SELECT * FROM ${v_table} WHERE ${WhereArgsformat}`,
-      values,
-    };
-    const response = await client.query(query);
-    return response.rows[0];
+  //   const WhereArgsformat = keys.map((key,idx) => `${key}=$${idx+1}`).join(',')
 
-   },
+  //   const response = await client.query(query);
+  //   return response.rows[0];
 
-   allOfferFavForUserById: async (_,args) => {
-    const keys = Object.keys(args);
-    const values = Object.values(args);
+  //  },
+  //  favOfferByUserId: async (_,args) => {
+  //   const keys = Object.keys(args);
+  //   const values = Object.values(args);
 
-    const WhereArgsformat = keys.map((key,idx) => `${key}=$${idx+1}`).join(',')
-    const query = {
-      text:  `SELECT * FROM ${v_table} WHERE ${WhereArgsformat}`,
-      values,
-    };
-    const response = await client.query(query);
-    return response.rows[0];
+  //   const WhereArgsformat = keys.map((key,idx) => `${key}=$${idx+1}`).join(',')
+  //   const query = {
+  //     text:  `SELECT * FROM ${v_table} WHERE ${WhereArgsformat}`,
+  //     values,
+  //   };
+  //   const response = await client.query(query);
+  //   return response.rows[0];
 
-   },
-
-   
+  //  }, 
   login:async (_,  args) => {
     const findUser = await userQueries.user(_, {email:args.email})
     if(!findUser){return {

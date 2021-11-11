@@ -3,6 +3,17 @@ import { gql } from 'apollo-server-express';
 
 const coordinate = gql `
 
+ type Element {
+    offer:Offer
+    user:User
+    coordinate:Coordinate
+}
+
+type Message {
+    message: String!
+    newElement: Element!
+  }
+
 type Coordinate {
     id: ID!,
     latitude: Float!
@@ -15,7 +26,7 @@ input CoordinateInput {
 }
 
 extend type Query {
-    coordinate: Coordinate!
+    coordinates: [Coordinate]!
     coordinate(
         id:ID!
     ):Coordinate!
@@ -25,7 +36,7 @@ extend type Mutation {
     createCoordinate (
       latitude: Float!
       longitude: Float!
-    ): Mutation!
+    ): Message!
 
 
 deleteCoordinate (
@@ -35,7 +46,7 @@ deleteCoordinate (
 updateCoordinate (
     id: Int!
     toUpdate: CoordinateInput
-): Coordinate!
+): Message!
 
 }
 

@@ -12,6 +12,8 @@ const offer = gql`
     picture: String,
     description: String!,
     status: String!
+    coordinate: Coordinate
+    owner: User
   }
 
   input OfferInput {
@@ -22,7 +24,10 @@ const offer = gql`
   }
 
   extend type Query { # extend root Query
-    offers:[Offer]!
+    offers(
+      user_account_id:Int
+      status: String
+    ):[Offer]!
     offer(
       id:ID!
       ):Offer! # argument is id
@@ -34,6 +39,8 @@ const offer = gql`
       picture: String,
       description: String!,
       status: String!,
+      user_account_id: Int!
+      coordinate: CoordinateInput!
     ): Message!
 
     deleteOffer(

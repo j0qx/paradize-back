@@ -17,6 +17,7 @@ const user = gql`
     city_code: Int,
     city: String,
     phone: String,
+    offers:[Offer]
   }
 
   input UserInput {
@@ -32,9 +33,6 @@ const user = gql`
     phone: String,
   }
 
-  type Message {
-    message: String!
-  }
 
   type Authorize {
     message:String
