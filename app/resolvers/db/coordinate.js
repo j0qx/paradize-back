@@ -21,7 +21,6 @@ const coordinateQueries = {
 
 const coordinateMutations = {
   createCoordinate: async (_, args) => {
-    console.log(args)
     // get names of table's columns
     const keys = Object.keys(args);
     // get value from coordinate to put inside table's columns
@@ -35,10 +34,10 @@ const coordinateMutations = {
       text: `INSERT INTO ${table} (${keys}) VALUES(${indexs})`,
       values: values,
     };
-    console.log(query)
+
     await client.query(query);
     const newElement = await coordinateQueries.coordinate(_,args)
-    console.log(newElement)
+
     // const newcoordinate = await coordinateQueries.coordinate(_,{id})
     // TODO: response isn't right , we need de to requery database and get result from insert
     return {message: "coordinate created",
@@ -48,10 +47,10 @@ const coordinateMutations = {
   },
   deleteCoordinate: async(_, args) =>  {
     const keys = Object.keys(args);
-    console.log(keys)
+
     // get value from coordinate to put inside table's columns
     const values = Object.values(args);
-    console.log(values)
+
 
     const WhereArgsformat = keys.map((key,idx) => `${key}=$${idx+1}`).join(',')
 

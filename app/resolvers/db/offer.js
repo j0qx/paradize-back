@@ -35,11 +35,8 @@ const offerQueries = {
     };
   }
     const offersResponse = await client.query(query);
-    console.log(offersResponse.rows)
     const coordinatesResponse = await coordinateQueries.coordinates()
-    console.log(coordinatesResponse)
     const usersResponse = await client.query({text: `SELECT * FROM user_account`})
-    console.log(usersResponse)
     const offers = offersResponse.rows.map((offer) => {
       const coordinate = coordinatesResponse.find(coordinate => offer.coordinate_id === coordinate.id)
       const user = usersResponse.rows.find(user => offer.user_account_id === user.id )
@@ -94,7 +91,6 @@ const offerMutations = {
          return prev;
       }
    });
-   console.log('offerCreated : ',offerCreated)
    const newCoordinate = {...offerCreated.coordinate}
    delete offerCreated.coordinate
     // const newoffer = await offerQueries.offer(_,{id})
@@ -109,10 +105,8 @@ const offerMutations = {
   },
   deleteOffer: async(_, args) =>  {
     const keys = Object.keys(args);
-    console.log(keys)
     // get value from offer to put inside offerTable's columns
     const values = Object.values(args);
-    console.log(values)
 
     const WhereArgsformat = keys.map((key,idx) => `${key}=$${idx+1}`).join(',')
 

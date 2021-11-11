@@ -11,7 +11,7 @@ const coordinate = gql `
 
 type Message {
     message: String!
-    newElement: Element!
+    newElement: Element
   }
 
 type Coordinate {
