@@ -27,5 +27,20 @@ JOIN favorite ON favorite.id = favorite.offer_id;
 
 
 
+CREATE VIEW viewAll AS
+
+SELECT offer.id,offer.title,offer.picture,offer.description,offer.status,
+
+offer.user_account_id,offer.coordinate_id,
+
+coordinate.latitude,coordinate.longitude AS coordinate FROM offer 
+
+JOIN coordinate ON offer.coordinate_id = coordinate.id
+
+JOIN search ON search.offer_id = offer.id
+JOIN setting ON setting.user_account_id = user_account.id;
+
+
+
 
 COMMIT;

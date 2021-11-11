@@ -4,6 +4,8 @@ import jwt from 'jsonwebtoken';
 
 const SECRET_KEY = process.env.SECRET_KEY;
 const table = 'user_account'
+const v_table = 'v_offer_user'
+const v_table_one = 'v_offer_user_favorite'
 
 const userQueries = {
   // actions when we execute graphql requests
@@ -14,6 +16,22 @@ const userQueries = {
     const response = await client.query(`SELECT * FROM ${table}`);
     return response.rows;
   },
+
+  findAllOfferForUser: async () => {
+    const response = await client.query (`SELECT * FROM ${v_table}`);
+    return response.rows;
+  },
+
+  allOfferFavForUser:  async() => {
+
+
+    const response = await client.query (`SELECT * FROM ${v_table_one}`);
+    return response.rows;
+    
+  },
+
+
+
   user: async (_, args) => {
     const keys = Object.keys(args);
 
@@ -27,7 +45,38 @@ const userQueries = {
     };
     const response = await client.query(query);
     return response.rows[0];
+
   },
+   
+   findOfferUserById: async(_,args) => {
+    const keys = Object.keys(args);
+    const values = Object.values(args);
+
+    const WhereArgsformat = keys.map((key,idx) => `${key}=$${idx+1}`).join(',')
+    const query = {
+      text:  `SELECT * FROM ${v_table} WHERE ${WhereArgsformat}`,
+      values,
+    };
+    const response = await client.query(query);
+    return response.rows[0];
+
+   },
+
+   allOfferFavForUserById: async (_,args) => {
+    const keys = Object.keys(args);
+    const values = Object.values(args);
+
+    const WhereArgsformat = keys.map((key,idx) => `${key}=$${idx+1}`).join(',')
+    const query = {
+      text:  `SELECT * FROM ${v_table} WHERE ${WhereArgsformat}`,
+      values,
+    };
+    const response = await client.query(query);
+    return response.rows[0];
+
+   },
+
+   
   login:async (_,  args) => {
     const findUser = await userQueries.user(_, {email:args.email})
     if(!findUser){return {
@@ -82,6 +131,8 @@ const userMutations = {
     // TODO: response isn't right , we need de to requery database and get result from insert
     return newUser;
   },
+
+
   deleteUser: async(_, args) =>  {
     const keys = Object.keys(args);
     console.log(keys)

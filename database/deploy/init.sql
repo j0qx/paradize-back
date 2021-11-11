@@ -65,7 +65,7 @@ CREATE TABLE setting (
     distance_sea BOOLEAN NOT NULL,
     distance_ski BOOLEAN NOT NULL,
     distance_border BOOLEAN NOT NULL,
-    user_id int NOT NULL REFERENCES user_account(id)
+    user_account_id int NOT NULL REFERENCES user_account(id)
 
 );
 
