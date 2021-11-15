@@ -4,6 +4,6 @@
 export PGUSER=oparadise
 export PGPASSWORD=Oparadise0clock$
 
-sqitch revert
+sqitch deploy
   
-sqitch deploy db:pg:oparadise
+#sqitch deploy db:pg:oparadise
