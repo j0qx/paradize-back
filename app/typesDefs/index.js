@@ -2,17 +2,20 @@
 import root from './root';
 import user from './db/user';
 import offer from './db/offer';
+import coordinate from './db/coordinate';
+import upload from './db/upload'
 import tomtom from './apis/tomtom';
 import geoRisque from './apis/geoRisque';
-import coordinate from './db/coordinate';
+
 
 const typeDefs = [
   root,
   user,
+  offer,
+  coordinate,
+  upload,
   tomtom,
   geoRisque,
-  coordinate,
-  offer,
 ];
 
 export default typeDefs;

@@ -5,15 +5,30 @@ import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import cookieParser from 'cookie-parser'
+import multer from 'multer'
+import path from 'path'
+import { graphqlUploadExpress } from 'graphql-upload';
 
 import typeDefs from './typesDefs';
 import resolvers from './resolvers';
 import TomtomApi from './datasources/TomtomApi';
 import GeoRisqueApi from './datasources/GeoRisqueApi';
 
+
 dotenv.config();
 const PORT = process.env.PORT;
 
+const storage = multer.diskStorage({
+  filename: function(req,file,callback) {
+      callback(null,Date.now() + path.extname(file.originalname));
+  },
+  destination: function (req, file, cb) {
+      cb(null, 'images')
+    }
+});
+
+
+const upload = multer({storage});
 
 // anomyme function executed when everything is loaded
 (async () => {
@@ -22,10 +37,17 @@ const PORT = process.env.PORT;
   app.use(cors());
   app.use(cookieParser())
 
-
   app.get('/', (req, res) => {
     res.send('welcome on graphql server');
   });
+
+  
+  app.post('/upload', upload.single("image"), (req, res) => {
+    console.log(req.file)
+    res.send('image uploaded');
+  });
+  
+  app.use('/images',express.static('images'));
 
   // we create the ApolloServer class with everything we need inside
   const apolloServer = new ApolloServer({
@@ -47,6 +69,7 @@ const PORT = process.env.PORT;
   
   await apolloServer.start();
   
+  app.use(graphqlUploadExpress());
   // apollo will be executed for each server's request
   apolloServer.applyMiddleware({ app });
 
