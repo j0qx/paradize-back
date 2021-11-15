@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import cookieParser from 'cookie-parser'
+import aws from 'aws-sdk'
 import multer from 'multer'
 import multerS3 from 'multer-s3'
 import path from 'path'
@@ -19,12 +20,23 @@ import GeoRisqueApi from './datasources/GeoRisqueApi';
 dotenv.config();
 const PORT = process.env.PORT;
 
+
+const storage = multer.diskStorage({
+  filename: function(req,file,callback) {
+      callback(null,Date.now() + path.extname(file.originalname));
+  },
+  destination: function (req, file, cb) {
+      cb(null, 'images')
+    }
+});
+
+
 const s3 = new aws.S3({ 
   accessKeyId:process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey:process.env.AWS_SECRET_ACCESS_KEY 
  })
 
-const upload = multer({
+const uploadS3 = multer({
   storage: multerS3({
     s3: s3,
     bucket: 'oparadize',
@@ -33,22 +45,13 @@ const upload = multer({
       cb(null, {fieldName: file.fieldname});
     },
     key: function (req, file, cb) {
-      cb(null, Date.now().toString())
+      cb(null, Date.now().toString() + path.extname(file.originalname))
     }
   })
 })
 
-// const storage = multer.diskStorage({
-//   filename: function(req,file,callback) {
-//       callback(null,Date.now() + path.extname(file.originalname));
-//   },
-//   destination: function (req, file, cb) {
-//       cb(null, 'images')
-//     }
-// });
 
-
-// const upload = multer({storage});
+const upload = multer({storage});
 
 // anomyme function executed when everything is loaded
 (async () => {
@@ -62,7 +65,7 @@ const upload = multer({
   });
 
   
-  app.post('/upload', upload.single("image"), (req, res) => {
+  app.post('/upload', uploadS3.single("image"), (req, res) => {
     console.log(req.file)
     res.send('image uploaded');
   });
