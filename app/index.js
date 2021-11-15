@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import cookieParser from 'cookie-parser'
 import multer from 'multer'
+import multerS3 from 'multer-s3'
 import path from 'path'
 import { graphqlUploadExpress } from 'graphql-upload';
 
@@ -18,17 +19,36 @@ import GeoRisqueApi from './datasources/GeoRisqueApi';
 dotenv.config();
 const PORT = process.env.PORT;
 
-const storage = multer.diskStorage({
-  filename: function(req,file,callback) {
-      callback(null,Date.now() + path.extname(file.originalname));
-  },
-  destination: function (req, file, cb) {
-      cb(null, 'images')
+const s3 = new aws.S3({ 
+  accessKeyId:process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey:process.env.AWS_SECRET_ACCESS_KEY 
+ })
+
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: 'oparadize',
+    acl: 'public-read',
+    metadata: function (req, file, cb) {
+      cb(null, {fieldName: file.fieldname});
+    },
+    key: function (req, file, cb) {
+      cb(null, Date.now().toString())
     }
-});
+  })
+})
+
+// const storage = multer.diskStorage({
+//   filename: function(req,file,callback) {
+//       callback(null,Date.now() + path.extname(file.originalname));
+//   },
+//   destination: function (req, file, cb) {
+//       cb(null, 'images')
+//     }
+// });
 
 
-const upload = multer({storage});
+// const upload = multer({storage});
 
 // anomyme function executed when everything is loaded
 (async () => {
@@ -48,7 +68,6 @@ const upload = multer({storage});
   });
   
   app.use('/images',express.static('images'));
-
   // we create the ApolloServer class with everything we need inside
   const apolloServer = new ApolloServer({
     // describe all types inside graphqlApi
