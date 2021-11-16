@@ -1,57 +1,20 @@
 import express from 'express';
 import cors from 'cors';
-import { ApolloServer , AuthenticationError} from 'apollo-server-express';
+import { ApolloServer } from 'apollo-server-express';
 import dotenv from 'dotenv';
-import jwt from 'jsonwebtoken'
-import bcrypt from 'bcryptjs'
 import cookieParser from 'cookie-parser'
-import aws from 'aws-sdk'
-import multer from 'multer'
-import multerS3 from 'multer-s3'
-import path from 'path'
 import { graphqlUploadExpress } from 'graphql-upload';
 
 import typeDefs from './typesDefs';
 import resolvers from './resolvers';
 import TomtomApi from './datasources/TomtomApi';
 import GeoRisqueApi from './datasources/GeoRisqueApi';
+import s3 from './utils/config'
 
 
 dotenv.config();
 const PORT = process.env.PORT;
 
-
-const storage = multer.diskStorage({
-  filename: function(req,file,callback) {
-      callback(null,Date.now() + path.extname(file.originalname));
-  },
-  destination: function (req, file, cb) {
-      cb(null, 'images')
-    }
-});
-
-
-const s3 = new aws.S3({ 
-  accessKeyId:process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey:process.env.AWS_SECRET_ACCESS_KEY 
- })
-
-const uploadS3 = multer({
-  storage: multerS3({
-    s3: s3,
-    bucket: 'oparadize',
-    acl: 'public-read',
-    metadata: function (req, file, cb) {
-      cb(null, {fieldName: file.fieldname});
-    },
-    key: function (req, file, cb) {
-      cb(null, Date.now().toString() + path.extname(file.originalname))
-    }
-  })
-})
-
-
-const upload = multer({storage});
 
 // anomyme function executed when everything is loaded
 (async () => {
@@ -64,13 +27,31 @@ const upload = multer({storage});
     res.send('welcome on graphql server');
   });
 
-  
-  app.post('/upload', uploadS3.single("image"), (req, res) => {
-    console.log(req.file)
-    res.send('image uploaded');
+  const encode = (data) => {
+    let buf = Buffer.from(data);
+    let base64 = buf.toString('base64');
+    return base64
+    }
+
+  app.get("/images/:imageId", function(req, res, next) {
+    console.log(req.params.imageId)
+    var params = { Bucket: "oparadize", Key: req.params.imageId };
+    const getS3 = async () => { 
+      const data = s3.getObject(params).promise()
+      return data
+    }
+    getS3().then((img) => {
+        let image="<img src='data:image/jpeg;base64," + encode(img.Body) + "'" + "/>";
+        let startHTML="<html><body></body>";
+        let endHTML="</body></html>";
+        let html=startHTML + image + endHTML;
+        res.send(html)
+      }).catch((e)=>{
+        res.send(e)
+      })
+
   });
-  
-  app.use('/images',express.static('images'));
+
   // we create the ApolloServer class with everything we need inside
   const apolloServer = new ApolloServer({
     // describe all types inside graphqlApi

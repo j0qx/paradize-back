@@ -38,6 +38,7 @@
     "nodemon": "^2.0.14",
     "pg": "^8.7.1",
     "postgresql": "^0.0.1",
+    "util.promisify": "^1.1.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
