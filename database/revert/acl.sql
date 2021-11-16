@@ -2,9 +2,11 @@
 
 BEGIN;
 
-DROP SCHEMA management,paradize;
+DROP SCHEMA management,paradize CASCADE;
 
 DROP ROLE user_worker;
+
+
 
 
 COMMIT;

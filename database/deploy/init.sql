@@ -14,7 +14,8 @@ CREATE TABLE user_account (
     city_code INT ,
     city TEXT ,
     phone INT UNIQUE ,
-    access_token TEXT UNIQUE
+    access_token TEXT UNIQUE,
+    avatar TEXT
 );
 CREATE TABLE coordinate (
     id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -26,7 +27,7 @@ CREATE TABLE coordinate (
 CREATE TABLE offer ( 
     id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     title TEXT NOT NULL,
-    picture bytea ,
+    picture  text[],
     description TEXT NOT NULL,
     status TEXT NOT NULL,
     user_account_id int REFERENCES user_account(id),
