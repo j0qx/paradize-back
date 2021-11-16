@@ -9,7 +9,7 @@ const offer = gql`
   type Offer {
     id: ID!,
     title: String!,
-    picture: String,
+    picture: [String],
     description: String!,
     status: String!
     coordinate: Coordinate
@@ -18,9 +18,9 @@ const offer = gql`
 
   input OfferInput {
     title: String,
-    picture: String,
     description: String,
     status: String,
+    picture: [String],
   }
 
   extend type Query { # extend root Query
@@ -36,11 +36,12 @@ const offer = gql`
   extend type Mutation {
     createOffer(
       title: String!,
-      picture: String,
+      picture: [String],
       description: String!,
       status: String!,
       user_account_id: Int!
       coordinate: CoordinateInput!
+
     ): Message!
 
     deleteOffer(

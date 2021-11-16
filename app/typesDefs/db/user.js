@@ -17,6 +17,7 @@ const user = gql`
     city_code: Int,
     city: String,
     phone: String,
+    avatar:String,
     offers:[Offer]
   }
 
@@ -31,6 +32,7 @@ const user = gql`
     city_code: Int,
     city: String,
     phone: String,
+    avatar:String,
   }
 
 
@@ -63,6 +65,7 @@ const user = gql`
       city_code: Int
       city: String
       phone: String
+      avatar:String
     ): User!
 
     deleteUser(
