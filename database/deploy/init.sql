@@ -2,6 +2,8 @@
 
 BEGIN;
 
+DROP TABLE IF EXISTS "user_account", "coordinate", "favorite", "offer", "search", "setting";
+
 CREATE TABLE user_account (
     id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     username VARCHAR(32) NOT NULL UNIQUE,
@@ -19,8 +21,8 @@ CREATE TABLE user_account (
 );
 CREATE TABLE coordinate (
     id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    latitude decimal(10, 6) NOT NULL,
-    longitude decimal(10, 6) NOT NULL
+    latitude decimal(12,10 ) NOT NULL,
+    longitude decimal(12, 10) NOT NULL
     --altitude DECIMAL(10, 8) NOT NULL
 );
 

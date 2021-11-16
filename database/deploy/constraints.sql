@@ -1,7 +1,7 @@
 -- Deploy oparadise:constraints to pg
 
 BEGIN;
-DROP DOMAIN IF EXISTS fr_code,email,code_phone,code_password; 
+DROP DOMAIN IF EXISTS fr_code,email,code_phone,code_password,pint,supint; 
 
   CREATE DOMAIN fr_code as text CHECK (
     VALUE ~ '^\d{5}$' 
