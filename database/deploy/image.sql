@@ -2,6 +2,7 @@
 
 BEGIN;
 
--- XXX Add DDLs here.
+ALTER TABLE offer
+ADD COLUMN price TEXT NOT NULL;
 
 COMMIT;
