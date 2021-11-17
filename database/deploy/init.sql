@@ -21,8 +21,8 @@ CREATE TABLE user_account (
 );
 CREATE TABLE coordinate (
     id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    latitude decimal(12,10 ) NOT NULL,
-    longitude decimal(12, 10) NOT NULL
+    latitude TEXT NOT NULL,
+    longitude TEXT NOT NULL
     --altitude DECIMAL(10, 8) NOT NULL
 );
 

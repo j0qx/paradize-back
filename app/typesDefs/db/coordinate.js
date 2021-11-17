@@ -16,13 +16,13 @@ type Message {
 
 type Coordinate {
     id: ID!,
-    latitude: Float!
-    longitude: Float!
+    latitude: String!
+    longitude: String!
 }
 
 input CoordinateInput {
-    latitude: Float!
-    longitude: Float!
+    latitude: String!
+    longitude: String!
 }
 
 extend type Query {
@@ -34,8 +34,8 @@ extend type Query {
 
 extend type Mutation {
     createCoordinate (
-      latitude: Float!
-      longitude: Float!
+      latitude: String!
+      longitude: String!
     ): Message!
 
 
