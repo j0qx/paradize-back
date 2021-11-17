@@ -8,10 +8,9 @@ const offerQueries = {
   // default resolvers's inputs are : (parent, args, context, info) => ...
   // cf: https://www.apollographql.com/docs/apollo-server/data/resolvers/
   offers: async (_, args) => {
-
     let query = {}
     if(args){
-    if (args.length<0) {
+    if (args.user_account_id) {
 
       const keys = Object.keys(args);
       // get value from offer to put inside offerTable's columns
@@ -23,6 +22,7 @@ const offerQueries = {
         text:  `SELECT * FROM ${offerTable} WHERE ${WhereArgsformat}`,
         values,
       };
+      
     }else{
       query = {
         text:  `SELECT * FROM ${offerTable}`
