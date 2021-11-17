@@ -21,7 +21,7 @@ const AWS_BUCKETNAME = process.env.AWS_BUCKETNAME;
 (async () => {
   
   const app = express();
-  app.use(cors());
+  app.options('*', cors())
   app.use(cookieParser())
 
   app.get('/', (req, res) => {
@@ -46,7 +46,7 @@ const AWS_BUCKETNAME = process.env.AWS_BUCKETNAME;
         let startHTML="<html><body></body>";
         let endHTML="</body></html>";
         let html=startHTML + image + endHTML;
-        res.send(html)
+        res.send(img.Body)
       }).catch((e)=>{
         res.send(e)
       })
