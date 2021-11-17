@@ -34,7 +34,7 @@ CREATE TABLE offer (
     status TEXT NOT NULL,
     user_account_id int REFERENCES user_account(id),
     coordinate_id int REFERENCES coordinate(id),
-    price TEXT NOT NULL
+    price TEXT 
 
 );
 
