@@ -14,6 +14,7 @@ import s3 from './utils/config'
 
 dotenv.config();
 const PORT = process.env.PORT;
+const AWS_BUCKETNAME = process.env.AWS_BUCKETNAME;
 
 
 // anomyme function executed when everything is loaded
@@ -35,7 +36,7 @@ const PORT = process.env.PORT;
 
   app.get("/images/:imageId", function(req, res, next) {
     console.log(req.params.imageId)
-    var params = { Bucket: "oparadize", Key: req.params.imageId };
+    var params = { Bucket: AWS_BUCKETNAME, Key: req.params.imageId };
     const getS3 = async () => { 
       const data = s3.getObject(params).promise()
       return data
