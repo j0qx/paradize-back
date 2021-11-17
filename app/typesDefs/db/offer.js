@@ -11,9 +11,10 @@ const offer = gql`
     title: String!,
     picture: [String],
     description: String!,
-    status: String!
-    coordinate: Coordinate
-    owner: User
+    status: String!,
+    coordinate: Coordinate,
+    price:String,
+    owner: User,
   }
 
   input OfferInput {
@@ -21,6 +22,7 @@ const offer = gql`
     description: String,
     status: String,
     picture: [String],
+    price:String,
   }
 
   extend type Query { # extend root Query
@@ -39,6 +41,7 @@ const offer = gql`
       picture: [String],
       description: String!,
       status: String!,
+      price:String,
       user_account_id: Int!
       coordinate: CoordinateInput!
 
