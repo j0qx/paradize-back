@@ -7,7 +7,7 @@ const getUrl = async (bucketName,key) => {
         Key:key
     };
 
-    let result = await s3.getSignedUrl('getObject',params).promise();
+    let result = await s3.getSignedUrl('getObject',params);
 
     result = result.split('?')[0];
 

@@ -1,4 +1,5 @@
 import s3 from '../../utils/config';
+import getUrl from '../../utils/object'
 import promisify from 'util.promisify';
 import {extname} from 'path';
 
@@ -29,7 +30,7 @@ const uploadQueries = {
             console.log(content)
             return objects.push({
                 key:content.Key,
-                url:getUrl
+                url:getUrl(bucketName,content.Key)
             })
         } );
 
